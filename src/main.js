@@ -9,6 +9,7 @@ import VueLazyLoad from 'vue-lazyload'
 
 Vue.config.productionTip = false
 
+// new一个vue实例，将$bus绑定到上面
 Vue.prototype.$bus=new Vue()
 // Vue.use(Toast)
 

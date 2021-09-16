@@ -26,10 +26,11 @@ export default {
       scroll:null
     }
   },
-  mounted() {
+  mounted() { 
     // 1.创建BScroll对象
     this.scroll=new BScroll(this.$refs.wrapper,{
       click:true,
+      // 采用封装的思想，不会影响性能
       probeType:this.probeType,
       pullUpLoad:this.pullUpLoad
     })
@@ -38,7 +39,6 @@ export default {
       this.$emit('scroll',position)
     })
     
-    
     // 3.监听scroll滚动到底部
     if(this.pullUpLoad){
      this.scroll.on('pullingUp',()=>{
@@ -46,7 +46,6 @@ export default {
       // console.log('上拉加载更多');
     })
     }
-
   },
   methods:{
     scrollTo(x,y,time=300){
@@ -56,7 +55,7 @@ export default {
       this.scroll&&this.scroll.finishPullUp()
     },
     refresh(){
-      // console.log("-------");
+    
       this.scroll&&this.scroll.refresh()
     },
     getScrollY(){

@@ -1,5 +1,6 @@
 <template>
   <div id="home">
+    <!-- 顶部导航 -->
     <nav-bar class="home-nav"><div slot="center">商品秀</div></nav-bar>
     <tab-control
         :titles="['流行', '新款', '精选']"
@@ -61,6 +62,7 @@ export default {
       banners: [],
       recommends: [],
       goods: {
+        // 默认把第一页的数据请求下来，直到下拉加载更多的时候才会把更多的数据请求下来
         pop: { page: 0, list: [] },
         new: { page: 0, list: [] },
         sell: { page: 0, list: [] },
@@ -84,37 +86,31 @@ export default {
   deactivated() {
     // 1.保存y值
     this.saveY=this.$refs.scroll.getScrollY()
-
-  
   },
   // 组件创建完后发送网络请求
   created() {
-    // 1.请求多个数据
-    this.getHomeMultidata();
+    // created只写业务请求，把逻辑部分写到methods里面
 
+    // 1.请求轮播图多个数据
+    this.getHomeMultidata();
     // 请求首页商品数据
     this.getHomeGoods("pop");
     this.getHomeGoods("new");
-    this.getHomeGoods("sell");
-
-    
+    this.getHomeGoods("sell");   
   },
   mounted() {
+    // 因为在created中拿不到$ref
     // 1.图片加载完成的事件监听
+    // 30张图片，每加载一次调用一次，调用的太频繁，用防抖来优化
     const refresh=debounce(this.$refs.scroll.refresh,200)
     // 3.监听item中图片加载完成
     this.$bus.$on('itemImageLoad',()=>{
       refresh()
     })
-
-   
-    
   },
   methods: {
-    
     // 事件监听相关的方法
     tabClick(index) {
-      
       switch (index) {
         case 0:
           this.currentType = "pop";
@@ -133,22 +129,21 @@ export default {
     backClick(){
       this.$refs.scroll.scrollTo(0,0,500)
     },
+    
     contentScroll(position){
       // 判断BackTop是否显示
       this.isShowBackTop=(-position.y)>1000
 
       // 决定tabConttrol是否吸顶(position:fixed)
-      this.isTabFixed=(-position.y)>this.tabOffsetTop
+      this.isTabFixed=(-position.y)>this.tabOffsetTop 
     },
     loadMore(){
       // console.log("上拉加载更多");
       this.getHomeGoods(this.currentType)
-
       // 刷新，重新计算滚动搞度
-     
+      // this.$refs.scroll.refresh()
     },
     swiperImageLoad(){
-      
       this.tabOffsetTop=this.$refs.tabControl2.$el.offsetTop;
     },
 
@@ -161,10 +156,12 @@ export default {
       });
     },
     getHomeGoods(type) {
+      // page为以后上拉加载更多铺垫
       const page = this.goods[type].page + 1;
       getHomeGoods(type, page).then((res) => {
         this.goods[type].list.push(...res.data.list);
-        this.goods[type].page + 1;
+        // 既然多了一组数据，给page+1
+        this.goods[type].page +=1;
         
         // 刷新.完成了下拉加载更多
         this.$refs.scroll.finishPullUp()

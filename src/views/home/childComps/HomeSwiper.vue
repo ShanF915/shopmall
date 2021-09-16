@@ -1,6 +1,7 @@
 <template>
   <swiper>
         <swiper-item v-for='(item,index) in banners' :key="index">
+         <!-- 图片是一个链接，点进去就会跳转到 -->
           <a :href="item.link">
             <img :src="item.image" alt="" @load="imageLoad">
           </a>
@@ -22,6 +23,7 @@ export default {
   },
   data() {
     return {
+      // 4张图片只需要发射出去一次事件
       isLoad:false
     }
   },
@@ -30,7 +32,9 @@ export default {
     SwiperItem
   },
   methods: {
+    // 监听轮播图是否加载完
     imageLoad(){
+      // 只需要发射出一次事件
       if(!this.isLoad){
         this.$emit('swiperImageLoad')
         this.isLoad=true
