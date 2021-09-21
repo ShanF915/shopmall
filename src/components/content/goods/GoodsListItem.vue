@@ -22,11 +22,13 @@ export default {
   },
   computed:{
     showImage(){
+      // 首页的图片存储位置在img,详情页的数据在show.img
       return this.goodsItem.image || this.goodsItem.show.img
     }
   },
   methods: {
     imageLoad(){
+      // goodlistitem组件在首页和详情页都用到这个组件
       if(this.$route.path.indexOf('/home')){
         this.$bus.$emit('itemImageLoad')
       }else if(this.$route.path.indexOf('/detail')){

@@ -23,6 +23,7 @@
       ></detail-comment-info>
       <goods-list ref="recommend" :goods="recommends"></goods-list>
     </scroll>
+
     <detail-bottom-bar @addCart="addToCart"></detail-bottom-bar>
     <back-top @click.native="backTop" v-show="isShowBackTop"></back-top>
     <toast :message='message' :show="show"></toast>
@@ -93,25 +94,25 @@ export default {
     // 1.保存传入的iid
     this.iid = this.$route.params.iid;
 
-    // 2.根据iid请求数据
+      // 2.根据iid请求数据
     getDetail(this.iid).then((res) => {
-      // 1.获取顶部的图片轮播数据
-      const data = res.result;
-      this.topImages = data.itemInfo.topImages;
+        // 1.获取顶部的图片轮播数据
+        const data = res.result;
+        this.topImages = data.itemInfo.topImages;
 
-      // 2.获取商品信息
-      this.goods = new Goods(
-        data.itemInfo,
-        data.columns,
-        data.shopInfo.services
-      );
+        // 2.获取商品信息
+        this.goods = new Goods(
+          data.itemInfo,
+          data.columns,
+          data.shopInfo.services
+        );
 
       // 3.获取店铺信息
       this.shop = new Shop(data.shopInfo);
 
       // 4.获取商品详细信息
       this.detailInfo = data.detailInfo;
-
+      
       // 5.获取参数信息
       this.paramInfo = new GoodsParam(
         data.itemParams.info,
@@ -134,21 +135,27 @@ export default {
       this.themeTopYs = [];
       this.themeTopYs.push(0);
       this.themeTopYs.push(this.$refs.params.$el.offsetTop);
-      this.themeTopYs.push(this.$refs.comment.$el.offsetTop);
+      this.themeTopYs.push(this.$refs.comment.$el.offsetTop||this.$refs.recommend.$el.offsetTop);
       this.themeTopYs.push(this.$refs.recommend.$el.offsetTop);
       this.themeTopYs.push(Number.MAX_VALUE)
     },100)
   },
-
+  mounted() {
+    const refresh=debounce(this.$refs.scroll.refresh,200)
+    // 3.监听item中图片加载完成
+    this.$bus.$on('detailItemImgLoad',()=>{
+      refresh()
+    })
+  },
   methods: {
     imageLoad() {
+      // 计算高度
       this.$refs.scroll.refresh();
-
+      // 在图片 加载完拿到正确的offsettop
       this.getThemeTopY()
     },
     titleClick(index) {
       // console.log(index);
-
       this.$refs.scroll.scrollTo(0, -this.themeTopYs[index], 300);
     },
     contentScroll(position){
@@ -158,7 +165,8 @@ export default {
       let length=this.themeTopYs.length
       // 2.和主题中的值进行对比
       for(let i=0;i< length-1;i++){
-      
+        
+      // 用currentIndex!==i进行优化，
         if(this.currentIndex!==i&&(positionY>=this.themeTopYs[i]&&positionY<this.themeTopYs[i+1])){
           this.currentIndex=i;
           this.$refs.nav.currentIndex=this.currentIndex
@@ -168,7 +176,6 @@ export default {
         //   this.$refs.nav.currentIndex=this.currentIndex
         // }
       }
-
       // 3.是否显示回到顶部
       this.isShowBackTop=-position.y>1000
     },
@@ -185,6 +192,7 @@ export default {
       product.iid=this.iid;
 
       // 2.将商品添加到购物车中
+      // this.$store.cartList.push(product)
       // this.$store.commit('addCart',product)
       this.$store.dispatch('addCart',product).then(res=>{
         this.show=true;

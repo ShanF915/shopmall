@@ -9,6 +9,6 @@
 		  selectorBlackList: ['ignore', 'tab-bar', 'tab-bar-item'], // 指定不需要转换的类,后面再讲.
 		  minPixelValue: 1, // 小于或等于`1px`不转换为视窗单位.
 		  mediaQuery: false // 允许在媒体查询中转换`px`
-	  },
+	  },	
   }
 }

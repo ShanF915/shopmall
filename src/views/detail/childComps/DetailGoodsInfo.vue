@@ -29,6 +29,9 @@
     },
     methods: {
 	    imgLoad() {
+        // 所有图片加载完，每次加载完一张图片，counter+=1
+        // this.counter+=1
+        // ++this.counter===this.this.detailInfo.detailImage[0].list.length
         if (++this.counter === this.imagesLength) {
 	        this.$emit('imageLoad')
         }
@@ -36,6 +39,7 @@
     },
     watch: {
 	    detailInfo() {
+        // 获取图片个数，
 	    	this.imagesLength = this.detailInfo.detailImage[0].list.length
 	    }
     }

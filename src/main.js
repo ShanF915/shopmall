@@ -11,6 +11,7 @@ Vue.config.productionTip = false
 
 // new一个vue实例，将$bus绑定到上面
 Vue.prototype.$bus=new Vue()
+// 安装toast插件
 // Vue.use(Toast)
 
 // 解决300ms延迟

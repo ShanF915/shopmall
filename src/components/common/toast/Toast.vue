@@ -16,7 +16,24 @@ export default {
       type:Boolean,
       default:false
     }
-  }
+  },
+  // data(){
+  //   return {
+  //     message:'',
+  //     isShow:false
+  //   }
+  // },
+  // methods:{
+  //   show(message,duration=2000){
+  //     this.isShow=true;
+  //     this.message=message;
+
+  //     setTimeout(()=>{
+  //       this.isShow=false;
+  //       this.message=''
+  //     },duration)
+  //   }
+  // }
 }
 </script>
 

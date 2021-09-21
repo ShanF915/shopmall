@@ -11,6 +11,7 @@
 
 <script>
 import {mapGetters} from 'vuex'
+
 import CartListItem from './CartListItem.vue'
 
 import Scroll from '../../../components/common/scroll/Scroll.vue'
