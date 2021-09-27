@@ -140,7 +140,7 @@ export default {
     loadMore(){
       // console.log("上拉加载更多");
       this.getHomeGoods(this.currentType)
-      // 刷新，重新计算滚动搞度
+      // 刷新，重新计算滚动高度
       // this.$refs.scroll.refresh()
     },
     swiperImageLoad(){

@@ -118,7 +118,6 @@ export default {
         data.itemParams.info,
         data.itemParams.rule
       );
-
       // 6.取出评论信息
       if (data.rate.cRate !== 0) {
         this.commentInfo = data.rate.list[0];
@@ -162,14 +161,14 @@ export default {
       // 1.获取y值
       const positionY=-position.y
 
-      let length=this.themeTopYs.length
+      let length=this.themeTopYs.length;
       // 2.和主题中的值进行对比
       for(let i=0;i< length-1;i++){
         
       // 用currentIndex!==i进行优化，
         if(this.currentIndex!==i&&(positionY>=this.themeTopYs[i]&&positionY<this.themeTopYs[i+1])){
           this.currentIndex=i;
-          this.$refs.nav.currentIndex=this.currentIndex
+          this.$refs.nav.currentIndex=this.currentIndex;
         }
         // if(this.currentIndex!==i&&(i<length-1 &&positionY>=this.themeTopYs[i]&&positionY<this.themeTopYs[i+1])||(i==length-1 &&positionY>=this.themeTopYs[i])){
         //   this.currentIndex=i;
